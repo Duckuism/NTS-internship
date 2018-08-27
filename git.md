@@ -136,7 +136,7 @@ branch는 아래와 같이 독립된 환경에서 다른 작업을 할 때 사�
          * commit되지 않은 변경된 파일들을 stash로 보내기 : ```$ git stash -u```
          * stash에 저장된 데이타 목록 확인 : ```$ git stash list```
          * 특정 stash 상세 정보 확인 : ```$ git show stash@{1}```
-         * 가장 최근의 stash 삭제 : ```$ git stash pop```
+         * 가장 최근에 stash된 내역을 되돌리고, 해당 내역을 리스트에서 삭제 : ```$ git stash pop```
          * stash를 반영하지만 list에서는 삭제 하지 않는다. : ```$ git stash apply``` 이 명령어를 이용하면 여러 브랜치에 동일한 stash작업을 적용할 수 있다.
          * 특정 stash 삭제 : ```$ git stash drop stash@{1}```
          * 모든 stash 삭제 : ```$ git stash clear```
@@ -212,9 +212,45 @@ HEAD : 현재 브랜치를 가리키는 포인터이며, 현재 브랜치에 담
 2. rebase : 커밋을 나누고, 합치고, 지우고, 순서를 바꾸는 등의 기능이 가능하다. 
    1. ```git rebase -i HEAD~<최근 head부터 편집을 원하는 commit의 갯수>```
       대화형이므로 병합을 제외한 commit 수정, 삭제 순서 변경은 위의 명령어를 통해 모두 가능하다.
+
    2. vim 편집기를 통해서 pick 명령어를 원하는 명령어로 변경
-   3. 병합의 경우에는 명령어가 다르다.
-      ```$ git rebase <병합할 branch 이름1> <병합할 branch 이름2>``` 명령어를 통해 branch를 충돌없이 병합할 수 있다. 이 경우에는 병합할 branch1의 마지막 commit 다음에 병합할 branch2의 커밋이 생성된다. 
+
+   3. 병합의 경우에는 명령어가 다르다. 
+      ```$ git rebase <병합할 branch 이름1> <병합할 branch 이름2>``` 명령어를 통해 branch를 병합할 수 있다.
+
+      사실 rebase는 병합이라는 번역이 적절하지 않다. rebase는 말그대로 브랜치 분기의 기저가 되는 부분을 다시 지정한다는 뜻이다. 즉, 분기점의 커밋을 다른 커밋으로 변경한다고 생각하면 된다. merge처럼 branch와 branch의 병합을 위해 쓸 수는 있지만, 사용 목적이 전혀 다르다. 만약 merge와 같은 개념으로 이해한다면 rebase를 제대로 이해하지 못한 것과 같다. 글로는 설명이 어려우므로 아래 이미지와 명령어 순서를 통해 알아본다.
+
+      ![](http://theeye.pe.kr/wp-content/uploads/2014/01/rebase_5.png)
+
+      위의 그림을 보면 feature 브랜치의 base는 Old Base라고 표시된 commit이었다. 우리는 rebase 명령어를 통해 feature 브랜치의 base를 master 브랜치의 head commit으로 바꾸고 싶다.
+
+      이 때는, ```$ git rebase master feature```  명령어로 master 브랜치의 head commit을 feature 브랜치의 base로 다시(re) 지정하면 된다. 결과적으로는 feature 브랜치가 master 브랜치의 뒤에 연결되는 형식이 된다. 바꿔 말하면 master 브랜치가 feature branch의 base가 되는 것과 같은 모양이다. 이렇게 연결되는 과정이 간단해보이지만, rebase를 제대로 이해하기 위해서는 feature 브랜치의 base를 변경하는 과정에서 어떻게 충돌이 발생하는지를 이해해야 한다.
+
+      1. 일단 rebase 명령어를 실행하면 기존의 base인 Old Base로 이동한다.
+
+      2. Old Base로 부터 rebase 할 브랜치인 feature가 현재 가리키고 있는 head 커밋까지의 diff를 차례대로 만들어서 임시로 저장해놓는다.
+
+      3. 그리고 feature 브랜치의 base를 master 브랜치의 head commit로 변경한다. 
+
+      4. 그리고 저장되어 있던 diff를 차례대로 적용한다. 이 때, Old Base commit부터 master 브랜치의 head commit까지 달라진 내용과, 현재 적용하는 feature 브랜치의 diff 내용이 달라 충돌이 연속적으로 발생할 수 있다. 
+
+      5. 충돌이 일어난 파일을 수정하고 ```$ git add``` 명령어를 통해 변경사항을 index에 추가한다.
+
+      6. git rebase에서 충돌이 발생하게 되면 현재 local 상태는 (no branch) 상태로 존재하게 된다. 따라서 다시 git rebase 명령으로 conflict를 해제하고 계속 진행(--continue)하거나 취소(--abort)해야한다.
+
+         ```$ git rebase --continue```
+
+      7. 다시 충돌이 발생하면 5~6번을 반복한다.
+
+      8. 위의 단계를 모두 수행하면 branch는 위의 그림과 같은 상태가 된다.
+
+      rebase 관련 참조 링크
+
+      * https://git-scm.com/book/ko/v2/Git-%EB%B8%8C%EB%9E%9C%EC%B9%98-Rebase-%ED%95%98%EA%B8%B0
+      * https://git-scm.com/docs/git-rebase
+      * http://pinocc.tistory.com/89
+      * 이미지 참조 : http://theeye.pe.kr/archives/1980
+
 
 
 
