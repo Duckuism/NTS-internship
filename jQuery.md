@@ -86,15 +86,20 @@ $body.eq(0) //jQuery객체의 0번째 인자들을 모아서 jQuery객체로 반
 
 ~~~javascript
 //getter,setter 패턴 1 - 파라미터 유무
-$("li").width(500); //setter
-$("li").width(); //getter
-//getter,setter 패턴 2 - 파라미터 개수
+//setter
+$("li").width(500); 
+//getter
+$("li").width(); 
 
-$("li").css("border","1px solid black"); //setter
+//getter,setter 패턴 2 - 파라미터 개수
+//setter
+$("li").css("border","1px solid black"); 
+//multiple setter 
 $("li").css({
    "border":"1px solid red" 
-});//multiple setter 
-$("li").css("border") //getter 
+}); 
+//getter 
+$("li").css("border") 
 ~~~
 
 setter/getter의 구분
@@ -104,7 +109,7 @@ setter/getter의 구분
 
 
 
-setter의 경우에는 jQuery객체가 반환되므로 **'메서드 체이닝'**이 가능!
+setter의 경우에는 jQuery객체가 반환되므로 **메서드 체이닝**이 가능!
 
 ~~~javascript
 $("li").width(500).height(500);
@@ -112,7 +117,7 @@ $("li").width(500).height(500);
 
 
 
-많이 사용하는 메서드들 (https://oscarotero.com/jquery/)
+많이 사용하는 메서드들 ( jQuery cheat sheet - https://oscarotero.com/jquery/ )
 
 - 돔을 제어 (append, prepend, html)
 - 애니메이션 (animate, fadeOut, slideUp)
@@ -377,7 +382,7 @@ prependTo는 결국 부모와 자식의 위치만 바꿔서 기술하는 코드�
 
 
 
-html/text
+#### html&text
 
 html : prepend나 append 같은 경우는 밑의 자식노드가 이미 있는 상태에서 element를 추가한다. 그러나 특정 element자체에 아무 것도 없는 상태에서 html태그 자체를 바꾸고 싶을 때 쓴다.
 
