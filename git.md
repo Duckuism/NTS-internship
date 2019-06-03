@@ -224,7 +224,11 @@ HEAD : 현재 브랜치를 가리키는 포인터이며, 현재 브랜치에 담
 
       위의 그림을 보면 feature 브랜치의 base는 Old Base라고 표시된 commit이었다. 우리는 rebase 명령어를 통해 feature 브랜치의 base를 master 브랜치의 head commit으로 바꾸고 싶다.
 
-      이 때는, ```$ git rebase master feature```  명령어로 master 브랜치의 head commit을 feature 브랜치의 base로 다시(re) 지정하면 된다. 결과적으로는 feature 브랜치가 master 브랜치의 뒤에 연결되는 형식이 된다. 바꿔 말하면 master 브랜치가 feature branch의 base가 되는 것과 같은 모양이다. 이렇게 연결되는 과정이 간단해보이지만, rebase를 제대로 이해하기 위해서는 feature 브랜치의 base를 변경하는 과정에서 어떻게 충돌이 발생하는지를 이해해야 한다.
+      이 때는, ```$ git rebase master feature```  명령어로 master 브랜치의 head commit을 feature 브랜치의 base로 다시(re) 지정하면 된다.
+      
+      ```<:Projectname:>/dev $ git rebase upstream/master``` 라는 명령어를 입력한다면 현재 활성화 되어있는 브랜치인 dev를 upstream/master 브랜치 위에 올리겠다는 얘기다. 즉 upstream/master의 head에 현재 브랜치인 dev를 붙이겠다는 뜻.
+      
+      결과적으로는 feature 브랜치가 master 브랜치의 뒤에 연결되는 형식이 된다. 바꿔 말하면 master 브랜치가 feature branch의 base가 되는 것과 같은 모양이다. 이렇게 연결되는 과정이 간단해보이지만, rebase를 제대로 이해하기 위해서는 feature 브랜치의 base를 변경하는 과정에서 어떻게 충돌이 발생하는지를 이해해야 한다.
 
       1. 일단 rebase 명령어를 실행하면 기존의 base인 Old Base로 이동한다.
 
@@ -250,8 +254,6 @@ HEAD : 현재 브랜치를 가리키는 포인터이며, 현재 브랜치에 담
       * https://git-scm.com/docs/git-rebase
       * http://pinocc.tistory.com/89
       * 이미지 참조 : http://theeye.pe.kr/archives/1980
-
-
 
 
 ## 병합하지 않고 원격 저장소의 데이터를 로컬에 가져오기
